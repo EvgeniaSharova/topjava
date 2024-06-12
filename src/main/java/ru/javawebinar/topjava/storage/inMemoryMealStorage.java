@@ -42,9 +42,10 @@ public class inMemoryMealStorage implements MealStorage {
     public Meal save(Meal meal) {
         if (mealIsNew(meal)) {
             meal.setId(id.incrementAndGet());
+            storage.put(meal.getId(), meal);
+            return meal;
         }
-        storage.put(meal.getId(), meal);
-        return storage.get(meal.getId());
+        return storage.computeIfPresent(meal.getId(), (id, lastMeal) -> meal);
     }
 
     @Override
