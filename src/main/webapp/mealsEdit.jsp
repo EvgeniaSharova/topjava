@@ -11,14 +11,14 @@
 <h2>Meal</h2>
 <section>
     <form method="post" action="meals">
-        <input type="hidden" name="id">
+        <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>Date Time</dt>
-            <dd><input type="datetime-local" name="dateTime" value="${meal.dateTime}}"></dd>
+            <dd><input type="datetime-local" name="dateTime" value="${meal.dateTime}"></dd>
         </dl>
         <dl>
             <dt>Description</dt>
-            <dd><input type="text" size="30" name="description" value="${meal.description}"></dd>
+            <dd><input type="text" size="30" name="description" value="${meal.description}" required></dd>
         </dl>
         <dl>
             <dt>Calories</dt>

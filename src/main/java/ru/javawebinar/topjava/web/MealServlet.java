@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 public class MealServlet extends HttpServlet {
@@ -29,7 +30,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("redirect to user");
+        log.debug("redirect to meals");
         String action = request.getParameter("action");
         if (action == null) {
             request.setAttribute("mealList", MealsUtil.getMealsTo(storage.getAll(), CALORIES_PER_DAY));
@@ -38,16 +39,19 @@ public class MealServlet extends HttpServlet {
             String id = request.getParameter("id");
             switch (action) {
                 case "delete": {
+                    log.info("delete meal id " + storage.get(Integer.parseInt(id)).getId());
                     storage.delete(Integer.parseInt(id));
                     response.sendRedirect("meals");
                     return;
                 }
                 case "add": {
-                    Meal meal = new Meal(LocalDateTime.now(), "", 0);
+                    log.info("add new meal");
+                    Meal meal = new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS), "", 0);
                     request.setAttribute("meal", meal);
                     request.getRequestDispatcher("mealsEdit.jsp").forward(request, response);
                 }
                 case "edit": {
+                    log.info("edit meal id " + storage.get(Integer.parseInt(id)).getId());
                     Meal meal = storage.get(Integer.parseInt(id));
                     request.setAttribute("meal", meal);
                     request.getRequestDispatcher("mealsEdit.jsp").forward(request, response);
@@ -61,9 +65,10 @@ public class MealServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                LocalDateTime.parse(request.getParameter("dateTime")),
+                LocalDateTime.parse(request.getParameter("dateTime")).truncatedTo(ChronoUnit.HOURS),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
+        log.info("correct " + (id.isEmpty() ? "add new meal" : "edit meal " + meal.getId()));
         storage.save(meal);
         response.sendRedirect("meals");
     }
