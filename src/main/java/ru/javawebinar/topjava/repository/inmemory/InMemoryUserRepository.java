@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(0);
+    private final AtomicInteger userId = new AtomicInteger(0);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
 
     @Override
@@ -29,7 +29,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User save(User user) {
         log.info("save {}", user);
         if (user.isNew()) {
-            user.setId(counter.incrementAndGet());
+            user.setId(userId.incrementAndGet());
             repository.put(user.getId(), user);
             return user;
         }
