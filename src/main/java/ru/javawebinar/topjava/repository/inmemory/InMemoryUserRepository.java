@@ -19,8 +19,8 @@ public class InMemoryUserRepository implements UserRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
 
-    public static final int USER_ID = 1;
-    public static final int ADMIN_ID = 2;
+    public static final int USER_ID = 100000;
+    public static final int ADMIN_ID = 100001;
 
     @Override
     public boolean delete(int id) {
