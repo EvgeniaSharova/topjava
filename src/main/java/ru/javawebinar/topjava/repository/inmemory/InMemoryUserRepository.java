@@ -16,8 +16,11 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
-    private final AtomicInteger userId = new AtomicInteger(0);
+    private final AtomicInteger counter = new AtomicInteger(0);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
+
+    public static final int USER_ID = 1;
+    public static final int ADMIN_ID = 2;
 
     @Override
     public boolean delete(int id) {
@@ -29,7 +32,7 @@ public class InMemoryUserRepository implements UserRepository {
     public User save(User user) {
         log.info("save {}", user);
         if (user.isNew()) {
-            user.setId(userId.incrementAndGet());
+            user.setId(counter.incrementAndGet());
             repository.put(user.getId(), user);
             return user;
         }
