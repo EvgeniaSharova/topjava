@@ -8,7 +8,10 @@ import ru.javawebinar.topjava.util.Util;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -34,7 +37,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> repositoryMeals = repositoryUsersMeals.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> repositoryMeals = repositoryUsersMeals.computeIfAbsent(userId, (meals) -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repositoryMeals.put(meal.getId(), meal);
@@ -59,7 +62,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         return getAllFiltered(userId, meal -> true);
     }
 

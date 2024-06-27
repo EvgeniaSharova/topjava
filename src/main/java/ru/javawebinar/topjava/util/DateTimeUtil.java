@@ -27,12 +27,14 @@ public class DateTimeUtil {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
 
-    public static @Nullable LocalDate parseLocalDate(@Nullable String str) {
-        return StringUtils.isEmpty(str) ? null : LocalDate.parse(str);
+    @Nullable
+    public static LocalDate parseLocalDate(@Nullable String str) {
+        return !StringUtils.hasLength(str) ? null : LocalDate.parse(str);
     }
 
-    public static @Nullable LocalTime parseLocalTime(@Nullable String str) {
-        return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
+    @Nullable
+    public static LocalTime parseLocalTime(@Nullable String str) {
+        return !StringUtils.hasLength(str) ? null : LocalTime.parse(str);
     }
 }
 

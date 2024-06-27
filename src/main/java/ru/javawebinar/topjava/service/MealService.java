@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.DateTimeUtil.getEndInclusive;
@@ -22,7 +21,6 @@ public class MealService {
         this.repository = repository;
     }
 
-
     public void delete(int mealId, int userId) {
         ValidationUtil.checkNotFoundWithId(repository.delete(mealId, userId), mealId);
     }
@@ -31,7 +29,7 @@ public class MealService {
         return ValidationUtil.checkNotFoundWithId(repository.get(mealId, userId), mealId);
     }
 
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         return repository.getAll(userId);
     }
 
