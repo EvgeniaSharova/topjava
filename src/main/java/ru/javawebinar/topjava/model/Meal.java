@@ -28,12 +28,14 @@ public class Meal extends AbstractBaseEntity {
     public static final String BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
     public static final String ALL_SORTED = "Meal.getAll";
 
-    @Column(name = "date_time", nullable = false, unique = true)
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
+
     @Column(name = "description", nullable = false)
     @NotBlank
     @Size(min = 1, max = 50)
     private String description;
+
     @Column(name = "calories", nullable = false)
     @Range(min = 1, max = 10000)
     private int calories;
