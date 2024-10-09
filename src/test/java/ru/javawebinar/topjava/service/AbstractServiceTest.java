@@ -24,7 +24,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class ServiceTest {
+public abstract class AbstractServiceTest {
     private static final Logger log = getLogger("result");
 
     private static final StringBuilder results = new StringBuilder();
@@ -32,6 +32,8 @@ public class ServiceTest {
     @Rule
     // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
     public final Stopwatch stopwatch = new Stopwatch() {
+
+
         @Override
         protected void finished(long nanos, Description description) {
             String result = String.format("\n%-25s %7d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
@@ -42,10 +44,11 @@ public class ServiceTest {
 
     @AfterClass
     public static void printResult() {
-        log.info("\n---------------------------------" +
+        log.info("\n-------------------------------------" +
                 "\nTest                 Duration, ms" +
-                "\n---------------------------------" +
+                "\n-------------------------------------" +
                 results +
-                "\n---------------------------------");
+                "\n-------------------------------------");
+        results.delete(0, results.length() - 1);
     }
 }
